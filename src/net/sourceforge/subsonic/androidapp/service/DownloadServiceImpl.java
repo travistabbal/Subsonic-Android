@@ -23,6 +23,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.wifi.WifiManager;
+import android.net.wifi.WifiManager.WifiLock;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -89,6 +91,8 @@ public class DownloadServiceImpl extends Service implements DownloadService {
     private VisualizerController visualizerController;
     private boolean showVisualization;
     private boolean jukeboxEnabled;
+    
+    private WifiLock wifiLock;
 
     static {
         try {
@@ -141,6 +145,10 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, this.getClass().getName());
         wakeLock.setReferenceCounted(false);
 
+        WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        wifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "SubSonic WifiLock");
+        wifiLock.acquire();
+
         instance = this;
         lifecycleSupport.onCreate();
     }
@@ -165,6 +173,7 @@ public class DownloadServiceImpl extends Service implements DownloadService {
         }
 
         instance = null;
+        if (wifiLock != null && wifiLock.isHeld()) wifiLock.release();
     }
 
     public static DownloadService getInstance() {
