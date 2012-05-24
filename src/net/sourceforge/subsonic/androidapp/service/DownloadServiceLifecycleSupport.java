@@ -208,27 +208,35 @@ public class DownloadServiceLifecycleSupport {
 
         switch (event.getKeyCode()) {
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+            	Log.i(TAG, "BT AVRCP: PLAY_PAUSE");
             case KeyEvent.KEYCODE_HEADSETHOOK:
             	downloadService.togglePlayPause();
+            	Log.i(TAG, "BT AVRCP: HEADSETHOOK");
                 break;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
                 downloadService.previous();
+                Log.i(TAG, "BT AVRCP: PREVIOUS");
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
                 if (downloadService.getCurrentPlayingIndex() < downloadService.size() - 1) {
                     downloadService.next();
                 }
+                Log.i(TAG, "BT AVRCP: NEXT");
                 break;
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 downloadService.reset();
+                Log.i(TAG, "BT AVRCP: STOP");
                 break;
 			case KeyEvent.KEYCODE_MEDIA_PLAY:
 				downloadService.start();
+				Log.i(TAG, "BT AVRCP: PLAY");
 				break;
 			case KeyEvent.KEYCODE_MEDIA_PAUSE:
 				downloadService.pause();
+				Log.i(TAG, "BT AVRCP: PAUSE");
 				break;
 			default:
+				Log.i(TAG, "BT AVRCP: UNKNOWN: " + event.getKeyCode());
                 break;
         }
     }
