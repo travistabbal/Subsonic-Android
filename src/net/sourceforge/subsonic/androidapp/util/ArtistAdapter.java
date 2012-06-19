@@ -62,7 +62,7 @@ public class ArtistAdapter extends ArrayAdapter<Artist> implements SectionIndexe
 
     @Override
     public int getPositionForSection(int section) {
-        return positions[section];
+        return section < positions.length ? positions[section] : positions[positions.length - 1];
     }
 
     @Override
