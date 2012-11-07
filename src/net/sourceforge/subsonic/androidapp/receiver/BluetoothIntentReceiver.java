@@ -18,6 +18,7 @@
  */
 package net.sourceforge.subsonic.androidapp.receiver;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +37,17 @@ public class BluetoothIntentReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        int state = intent.getIntExtra("android.bluetooth.a2dp.extra.SINK_STATE", -1);
+    	if (intent.getAction().equals(BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
+            Log.i(TAG, "NEW: Disconnected from Bluetooth A2DP, requesting pause.");
+            context.sendBroadcast(new Intent(DownloadServiceImpl.CMD_PAUSE));  		
+    	}
+    	
+    	if (intent.getAction().equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
+            Log.i(TAG, "NEW: Connected to Bluetooth A2DP, requesting media button focus.");
+            Util.registerMediaButtonEventReceiver(context);
+    	}
+
+    	int state = intent.getIntExtra("android.bluetooth.a2dp.extra.SINK_STATE", -1);
         Log.i(TAG, "android.bluetooth.a2dp.extra.SINK_STATE, state = " + state);
         boolean connected = state == 2;  // android.bluetooth.BluetoothA2dp.STATE_CONNECTED
         if (connected) {

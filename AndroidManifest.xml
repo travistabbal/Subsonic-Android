@@ -11,6 +11,7 @@
     <uses-permission a:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission a:name="android.permission.RECORD_AUDIO"/>
     <uses-permission a:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission a:name="android.permission.BLUETOOTH"/>
 
     <uses-sdk a:minSdkVersion="4" a:targetSdkVersion="15"/>
 
@@ -94,6 +95,8 @@
         <receiver a:name="net.sourceforge.subsonic.androidapp.receiver.BluetoothIntentReceiver">
             <intent-filter>
                 <action a:name="android.bluetooth.a2dp.action.SINK_STATE_CHANGED"/>
+                <action a:name="android.bluetooth.device.action.ACL_CONNECTED"/>
+                <action a:name="android.bluetooth.device.action.ACL_DISCONNECTED"/>
             </intent-filter>
         </receiver>
 
